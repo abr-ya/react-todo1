@@ -1,9 +1,25 @@
-import React from 'react';
+import React, {useState} from 'react';
+import cn from 'classnames';
 import './TodoListItem.css';
 
 const TodoListItem = ({text, important = false}) => {
-	const itemClickHandler = (text) => {
-		console.log('click', text);
+	const [done, setDone] = useState(false);
+
+	const itemClickHandler = (id, text) => {
+		console.log(id);
+		//console.log('click', text);
+		//console.log(done);
+		setDone(!done);
+	}
+
+	const importantClickHandler = (e) => {
+		e.stopPropagation();
+		console.log('!');
+	}
+
+	const deleteClickHandler = (e) => {
+		e.stopPropagation();
+		console.log('del');
 	}
 	
 	const liStyle = {
@@ -12,16 +28,18 @@ const TodoListItem = ({text, important = false}) => {
 	}
 
 	return (
-		<li className="list-group-item todo-list-item" style={liStyle}>
-			<span className="todo-list-item-label" onClick={() => itemClickHandler(text) }>
+		<li className={cn("list-group-item", "todo-list-item", {
+			"done": done, // класс - условие
+		  })} style={liStyle} onClick={() => itemClickHandler(1, text)} >
+			<span className="todo-list-item-label">
 				{text}
 			</span>
 
-			<button type="button" className="btn btn-outline-success btn-sm float-right">
+			<button type="button" className="btn btn-outline-success btn-sm float-right" onClick={(e) => importantClickHandler(e)} >
 				<i className="fa fa-exclamation" />
 			</button>
 
-			<button type="button" className="btn btn-outline-danger btn-sm float-right">
+			<button type="button" className="btn btn-outline-danger btn-sm float-right" onClick={(e) => deleteClickHandler(e)} >
 				<i className="fa fa-trash-o" />
 			</button>
 		</li>
