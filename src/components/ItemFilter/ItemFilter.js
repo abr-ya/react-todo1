@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ItemFilter = (props) => {
-    console.log(props);
+    //console.log(props);
     
     return (
         <div className="btn-group">
