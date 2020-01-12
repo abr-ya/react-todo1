@@ -14,10 +14,26 @@ const App = () => {
 	];
 
 	const [data, setData] = useState(todoData);
-	//const [searchValue, setSearchValue] = useState("");
+	const [searchValue, setSearchValue] = useState("");
 
-	const countItem = data.length;
-	const countDone = data.filter((item) => item.done).length;
+	// остались и сделаны - без скрытых
+	const countItem = data.filter((item) => !item.hide).length;
+	const countDone = data
+		.filter((item) => !item.hide)
+		.filter((item) => item.done).length;
+
+	// фильтрация элементов по поисковой фразе
+	const filter = (data, searchValue) => {
+		return data.map(item => {
+			if (item.text.toUpperCase().indexOf(searchValue.toUpperCase()) === -1 && searchValue !== "") {
+				return {...item, hide: true}
+			} else {
+				return item
+			}
+		});
+	}
+	//console.log(filter(data, searchValue));
+
 
 	const setHide = (index) => {
 		const newData = [...data];
@@ -54,10 +70,10 @@ const App = () => {
 		<div className="todo-app">
 			<AppHeader toDo={countItem - countDone} done={countDone} />
 			<div className="top-panel d-flex">
-				<SearchPanel />
+				<SearchPanel setSearchValue={setSearchValue} />
 				<ItemFilter />
 			</div>
-			<TodoList data={data} itemMethod={itemMethod} />
+			<TodoList data={filter(data, searchValue)} itemMethod={itemMethod} />
 			<ItemAdd addItem={addItem} />
 		</div>
 	);

@@ -5,7 +5,7 @@ const ItemAdd = ({addItem}) => {
     //console.log(addItem);
     const [inputValue, setInputValue] = useState("");
 
-    const nameChangeHandler = (e) => {
+    const inputChangeHandler = (e) => {
         setInputValue(e.target.value);
     }
 
@@ -20,8 +20,8 @@ const ItemAdd = ({addItem}) => {
             onSubmit={formSubmitHandler}>
             <input type="text"
                 className="form-control"
-                onChange={nameChangeHandler}
-                placeholder="что делать?"
+                onChange={inputChangeHandler}
+                placeholder="what do you want to do?"
                 value={inputValue}
             />
             <button className="btn btn-outline-secondary">
