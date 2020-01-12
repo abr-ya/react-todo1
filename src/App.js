@@ -14,6 +14,10 @@ const App = () => {
 	];
 
 	const [data, setData] = useState(todoData);
+	//const [searchValue, setSearchValue] = useState("");
+
+	const countItem = data.length;
+	const countDone = data.filter((item) => item.done).length;
 
 	const setHide = (index) => {
 		const newData = [...data];
@@ -22,7 +26,7 @@ const App = () => {
 	}
 
 	const addItem = (text) => {
-		const newItem = {id: 4, text, important: true};
+		const newItem = {id: 4, text, important: false};
 		setData([...data, newItem]);
 	}
 
@@ -48,7 +52,7 @@ const App = () => {
 
 	return (
 		<div className="todo-app">
-			<AppHeader toDo={1} done={3} />
+			<AppHeader toDo={countItem - countDone} done={countDone} />
 			<div className="top-panel d-flex">
 				<SearchPanel />
 				<ItemFilter />
