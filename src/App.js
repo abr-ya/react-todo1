@@ -15,6 +15,7 @@ const App = () => {
 
 	const [data, setData] = useState(todoData);
 	const [searchValue, setSearchValue] = useState("");
+	const [filterStatus, setFilterStatus] = useState("all");
 
 	// остались и сделаны - без скрытых
 	const countItem = data.filter((item) => !item.hide).length;
@@ -23,7 +24,7 @@ const App = () => {
 		.filter((item) => item.done).length;
 
 	// фильтрация элементов по поисковой фразе
-	const filter = (data, searchValue) => {
+	const search = (data, searchValue) => {
 		return data.map(item => {
 			if (item.text.toUpperCase().indexOf(searchValue.toUpperCase()) === -1 && searchValue !== "") {
 				return {...item, hide: true}
@@ -32,8 +33,31 @@ const App = () => {
 			}
 		});
 	}
-	//console.log(filter(data, searchValue));
+	//console.log(search(data, searchValue));
 
+	// фильтрация элементов по статусу
+	const filter = (data, filterStatus) => {
+		if (filterStatus === "all") {
+			return data;
+		} else if (filterStatus === "active") {
+			return data.map(item => {
+				if (item.done) {
+					return {...item, hide: true}
+				} else {
+					return item
+				}
+			});
+		} else if (filterStatus === "done") {
+			return data.map(item => {
+				if (!item.done) {
+					return {...item, hide: true}
+				} else {
+					return item
+				}
+			});
+		}
+	}
+	//console.log(filter(search(data, searchValue), filterStatus));	
 
 	const setHide = (index) => {
 		const newData = [...data];
@@ -71,9 +95,9 @@ const App = () => {
 			<AppHeader toDo={countItem - countDone} done={countDone} />
 			<div className="top-panel d-flex">
 				<SearchPanel setSearchValue={setSearchValue} />
-				<ItemFilter />
+				<ItemFilter filterStatus={filterStatus} setFilterStatus={setFilterStatus} />
 			</div>
-			<TodoList data={filter(data, searchValue)} itemMethod={itemMethod} />
+			<TodoList data={filter(search(data, searchValue), filterStatus)} itemMethod={itemMethod} />
 			<ItemAdd addItem={addItem} />
 		</div>
 	);

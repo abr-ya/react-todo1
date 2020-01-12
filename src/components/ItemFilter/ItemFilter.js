@@ -1,21 +1,24 @@
 import React from 'react';
 
-const ItemFilter = (props) => {
-    //console.log(props);
-    
-    return (
-        <div className="btn-group">
-            <button type="button" className="btn btn-info">
-                All
-            </button>
-            <button type="button" className="btn btn-outline-secondary">
-                Active
-            </button>
-            <button type="button" className="btn btn-outline-secondary">
-                Done
-            </button>
-        </div>
-    )
+const ItemFilter = ({filterStatus, setFilterStatus}) => {
+    //console.log(filterStatus);
+    const filterButtons = [
+        {key: 'all', text: 'All'},
+        {key: 'active', text: 'Active'},
+        {key: 'done', text: 'Done'},
+    ];
+    const htmlButtons = filterButtons.map((button, index) => {
+        const buttonClass = button.key === filterStatus
+            ? "btn btn-info"
+            : "btn btn-outline-secondary";
+        return (
+            <button type="button" className={buttonClass} key={button.key}
+                onClick={() => setFilterStatus(button.key)}>
+                    {button.text}
+            </button>            
+        )
+    });
+    return (<div className="btn-group">{htmlButtons}</div>);
 }
 
 export default ItemFilter;
